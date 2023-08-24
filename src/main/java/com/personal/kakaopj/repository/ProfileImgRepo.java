@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 
 @Repository
-public interface ProfileImgRepository extends JpaRepository<ProfileImg, Long> {
+public interface ProfileImgRepo extends JpaRepository<ProfileImg, Long> {
     ArrayList<ProfileImg> findProfileImgById(long profileId);
 
     @Query(value = "select * from ProfileImg where profile_id = :id", nativeQuery = true)

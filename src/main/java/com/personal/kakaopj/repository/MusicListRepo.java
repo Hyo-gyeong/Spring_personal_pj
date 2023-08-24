@@ -6,11 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 @Repository
-public interface MusicListRepository extends JpaRepository<MusicList, Long> {
+public interface MusicListRepo extends JpaRepository<MusicList, Long> {
     @Query(value = "select * from MusicList where profile_play_list_id = :id order by music_list_id desc limit 1", nativeQuery = true)
     MusicList getMyMainMusicList(@Param("id") long profilePlayListId);
 

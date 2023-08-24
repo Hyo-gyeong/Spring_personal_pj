@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 
 @Repository
-public interface ProfileRepository extends JpaRepository<Profile, Long> {
+public interface ProfileRepo extends JpaRepository<Profile, Long> {
     ArrayList<Profile> findProfileByUserId(long userId);
 
     @Query(value = "select * from Profile where user_id = :userId and is_multi_profile = 0", nativeQuery = true)
