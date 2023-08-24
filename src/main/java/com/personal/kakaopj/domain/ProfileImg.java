@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ProfileImg")
@@ -39,9 +39,9 @@ public class ProfileImg {
     private boolean isPrivate;
 
     @Column(name="create_date_time")
-    private Date createDateTime;
+    private LocalDateTime createDateTime;
 
     @Column(name="update_date_time")
-    private Date updateDateTime;
+    private LocalDateTime updateDateTime;
 
 }

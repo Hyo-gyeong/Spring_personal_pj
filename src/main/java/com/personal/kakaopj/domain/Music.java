@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Music")
@@ -36,8 +36,8 @@ public class Music {
     private String lyrics;
 
     @Column(name="create_date_time")
-    private Date createDateTime;
+    private LocalDateTime createDateTime;
 
     @Column(name="update_date_time")
-    private Date updateDateTime;
+    private LocalDateTime updateDateTime;
 }

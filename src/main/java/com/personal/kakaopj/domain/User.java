@@ -9,7 +9,7 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -37,7 +37,7 @@ public class User {
     @Column(name="phone_number")
     private String phoneNumber;
 
-    private Date birthday;
+    private LocalDateTime birthday;
 
     @Column(name="is_birthday_hidden")
     private Boolean isBirthdayHidden;
@@ -45,10 +45,10 @@ public class User {
     private String name;
 
     @Column(name="create_date_time")
-    private Date createDateTime;
+    private LocalDateTime createDateTime;
 
     @Column(name="update_date_time")
-    private Date updateDateTime;
+    private LocalDateTime updateDateTime;
 
     @Column(name="kakao_id")
     private String kakaoId;

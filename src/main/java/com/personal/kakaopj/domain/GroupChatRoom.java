@@ -1,7 +1,7 @@
 package com.personal.kakaopj.domain;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "GroupChatRoom")
@@ -18,10 +18,10 @@ public class GroupChatRoom {
     private Long id;
 
     @Column(name="create_date_time")
-    private Date createDateTime;
+    private LocalDateTime createDateTime;
 
     @Column(name="update_date_time")
-    private Date updateDateTime;
+    private LocalDateTime updateDateTime;
 
     public Long getId() {
         return id;
@@ -31,19 +31,19 @@ public class GroupChatRoom {
         this.id = id;
     }
 
-    public Date getCreateDateTime() {
+    public LocalDateTime getCreateDateTime() {
         return createDateTime;
     }
 
-    public void setCreateDateTime(Date createDateTime) {
+    public void setCreateDateTime(LocalDateTime createDateTime) {
         this.createDateTime = createDateTime;
     }
 
-    public Date getUpdateDateTime() {
+    public LocalDateTime getUpdateDateTime() {
         return updateDateTime;
     }
 
-    public void setUpdateDateTime(Date updateDateTime) {
+    public void setUpdateDateTime(LocalDateTime updateDateTime) {
         this.updateDateTime = updateDateTime;
     }
 }

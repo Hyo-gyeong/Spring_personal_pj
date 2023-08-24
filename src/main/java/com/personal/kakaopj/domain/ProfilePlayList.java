@@ -7,7 +7,7 @@ import lombok.ToString;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ProfilePlayList")
@@ -27,10 +27,10 @@ public class ProfilePlayList {
     private Long id;
 
     @Column(name="create_date_time")
-    private Date createDateTime;
+    private LocalDateTime createDateTime;
 
     @Column(name="update_date_time")
-    private Date updateDateTime;
+    private LocalDateTime updateDateTime;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")

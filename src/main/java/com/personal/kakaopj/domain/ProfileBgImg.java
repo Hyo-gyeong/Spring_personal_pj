@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ProfileBgImg")
@@ -38,8 +38,19 @@ public class ProfileBgImg {
     private boolean isPrivate;
 
     @Column(name="create_date_time")
-    private Date createDateTime;
+    private LocalDateTime createDateTime;
 
     @Column(name="update_date_time")
-    private Date updateDateTime;
+    private LocalDateTime updateDateTime;
+
+    public ProfileBgImg(){}
+    public ProfileBgImg(Profile profile, String imgAddress, boolean isPrivate, boolean isMain){
+        super();
+        this.profile = profile;
+        this.imgAddress = imgAddress;
+        this.isPrivate = isPrivate;
+        this.isMain = isMain;
+        this.createDateTime = LocalDateTime.now();
+        this.updateDateTime = LocalDateTime.now();
+    }
 }

@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "MusicList")
@@ -36,5 +36,5 @@ public class MusicList {
     private boolean isLike;
 
     @Column(name="add_date_time")
-    private Date addDateTime;
+    private LocalDateTime addDateTime;
 }
