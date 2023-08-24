@@ -2,6 +2,7 @@ package com.personal.kakaopj.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 
 @Getter
@@ -9,8 +10,11 @@ import lombok.Setter;
 public class UserProfileDto {
     private Long id;
     private String name;
+    @Nullable
     private ProfileDto profileDto;
+    @Nullable
     private ProfileImgDto profileImg;
+    @Nullable
     private ProfileMusicDto music;
 
     public UserProfileDto(Long id, String name, ProfileDto profileDto, ProfileImgDto profileImg,
