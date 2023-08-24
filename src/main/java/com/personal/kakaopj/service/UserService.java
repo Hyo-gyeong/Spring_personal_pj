@@ -64,68 +64,76 @@ public class UserService {
 
         me = userRepo.findUserById(userId);
 
-        Profile profile = profileRepo.getMainProfile(userId);
-        if (!profile.isMultiProfile()) {
+        Profile profile = profileRepo.getMyMainProfile(userId);
+        if (profile != null && !profile.isMultiProfile()) {
             mainProfile = new ProfileDto(profile.getId(), profile.getName(), profile.getStatusMessage());
         }
 
-        List<ProfileImg> profileImgList = profileImgRepo.findProfileImgById(mainProfile.getId());
-        for (ProfileImg p : profileImgList){
-            if (p.isMain()){
-                mainProfileImg = new ProfileImgDto(p.getId(), p.getImgAddress(), p.isMain(), p.isPrivate());
-                break;
+        if (mainProfile != null) {
+            List<ProfileImg> profImgList = profileImgRepo.findProfileImgById(mainProfile.getId());
+            if (profImgList != null) {
+                for (ProfileImg p : profImgList) {
+                    if (p.isMain()) {
+                        mainProfileImg = new ProfileImgDto(p.getId(), p.getImgAddress(), p.isMain(), p.isPrivate());
+                        break;
+                    }
+                }
             }
         }
 
-        ProfilePlayList profilePlayList = profilePlayListRepo.findProfilePlayListById(mainProfile.getId());
-        MusicList musicList = musicListRepo.getMyMainMusicList(profilePlayList.getId());
-        if (musicList != null) {
-            Music temp = musicRepo.findMusicById(musicList.getMusic().getId());
-            mainMusic = new ProfileMusicDto(temp.getId(), temp.getAlbumCoverImgAddress(), temp.getTitle(),
-                                    temp.getSinger(), temp.getGenre(), temp.getLyrics());
+        if (mainProfile != null) {
+            ProfilePlayList profPlayList = profilePlayListRepo.findProfilePlayListById(mainProfile.getId());
+            MusicList musicList = musicListRepo.getMyMainMusicList(profPlayList.getId());
+            if (musicList != null) {
+                Music m = musicRepo.findMusicById(musicList.getMusic().getId());
+                mainMusic = new ProfileMusicDto(m.getId(), m.getAlbumCoverImgAddress(), m.getTitle(),
+                        m.getSinger(), m.getGenre(), m.getLyrics());
+            }
         }
-
         return new UserProfileDto(me.getId(), me.getName(), mainProfile, mainProfileImg, mainMusic);
+
     }
 
 
     // 기본 프로필 정보 : 이름, 상태 메시지, 프로필 사진, 프로필 배경 사진, 플레이리스트 및 음악
     public UserDetailProfileDto getMyDetailProfile(long userId){
         User me;
-        ProfileDto profile = null;
-        ArrayList<ProfileImgDto> profileImgList = new ArrayList<>();
-        ArrayList<ProfileBgImgDto> profileBgImgList = new ArrayList<>();
-        ProfilePlayListDto profilePlayListDto;
+        ProfileDto prof;
+        ArrayList<ProfileImgDto> profImgList = new ArrayList<>();
+        ArrayList<ProfileBgImgDto> profBgImgList = new ArrayList<>();
+        ProfilePlayListDto profPlayListDto;
         ArrayList<ProfileMusicDto> musicLists = new ArrayList<>();
 
         me = userRepo.findUserById(userId);
 
-        Profile mainProfilep = profileRepo.getMainProfile(userId);
-        if (!mainProfilep.isMultiProfile()) { // 멀티 프로필이 아닌 기본 프로필
-            profile = new ProfileDto(mainProfilep.getId(), mainProfilep.getName(), mainProfilep.getStatusMessage());
+        Profile mainProfile = profileRepo.getMyMainProfile(userId);
+        if (mainProfile != null && !mainProfile.isMultiProfile()) { // 멀티 프로필이 아닌 기본 프로필
+            prof = new ProfileDto(mainProfile.getId(), mainProfile.getName(), mainProfile.getStatusMessage());
+
+            ArrayList<ProfileImg> profileImgs = profileImgRepo.getProfileImgByProfileId(prof.getId());
+            for (ProfileImg p : profileImgs) {
+                profImgList.add(new ProfileImgDto(p.getId(), p.getImgAddress(), p.isMain(), p.isPrivate()));
+            }
+
+            ArrayList<ProfileBgImg> profileBgImgs = profileBgImgRepo.getProfileBgImgByProfileId(prof.getId());
+            for (ProfileBgImg p : profileBgImgs) {
+                profBgImgList.add(new ProfileBgImgDto(p.getId(), p.getImgAddress(), p.isMain(), p.isPrivate()));
+            }
+
+            ProfilePlayList tmpPList = profilePlayListRepo.findProfilePlayListById(prof.getId());
+            profPlayListDto = new ProfilePlayListDto(tmpPList.getId(), tmpPList.getCreateDateTime(), tmpPList.getUpdateDateTime());
+
+            ArrayList<MusicList> tempMusicList = musicListRepo.getMyAllMusicList(prof.getId());
+            for (MusicList ml : tempMusicList) {
+                Music m = musicRepo.findMusicById(ml.getMusic().getId());
+                musicLists.add(new ProfileMusicDto(m.getId(), m.getAlbumCoverImgAddress(), m.getTitle(),
+                        m.getSinger(), m.getGenre(), m.getLyrics()));
+            }
+
+            return new UserDetailProfileDto(me.getId(), me.getName(), prof, profPlayListDto, profImgList,
+                    profBgImgList, musicLists);
         }
-
-        ArrayList<ProfileImg> profileImgs = profileImgRepo.getProfileImgByProfileId(profile.getId());
-        for (ProfileImg p : profileImgs){
-            profileImgList.add(new ProfileImgDto(p.getId(), p.getImgAddress(), p.isMain(), p.isPrivate()));
-        }
-
-        ArrayList<ProfileBgImg> profileBgImgs = profileBgImgRepo.getProfileImgByProfileId(profile.getId());
-        for (ProfileBgImg p : profileBgImgs){
-            profileBgImgList.add(new ProfileBgImgDto(p.getId(), p.getImgAddress(), p.isMain(), p.isPrivate()));
-        }
-
-        ProfilePlayList tmpPList = profilePlayListRepo.findProfilePlayListById(profile.getId());
-        profilePlayListDto = new ProfilePlayListDto(tmpPList.getId(), tmpPList.getCreateDateTime(), tmpPList.getUpdateDateTime());
-
-        ArrayList<MusicList> tempMusicList= musicListRepo.getMyAllMusicList(profile.getId());
-        for (MusicList m : tempMusicList){
-            Music music = musicRepo.findMusicById(m.getMusic().getId());
-            musicLists.add(new ProfileMusicDto(music.getId(), music.getAlbumCoverImgAddress(), music.getTitle(),
-                                                music.getSinger(), music.getGenre(), music.getLyrics()));
-        }
-
-        return new UserDetailProfileDto(me.getId(), me.getName(), profile, profilePlayListDto, profileImgList,
-                                        profileBgImgList, musicLists);
+        return new UserDetailProfileDto(me.getId(), me.getName(), null, null, null, null, null);
     }
+
 }
