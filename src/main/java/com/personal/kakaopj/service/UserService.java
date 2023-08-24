@@ -13,45 +13,45 @@ import java.util.List;
 public class UserService {
 
     @Autowired
-    private UserRepository userRepository;
-    public void setUserRepository(UserRepository userRepository){
-        this.userRepository = userRepository;
+    private UserRepo userRepo;
+    public void setUserRepository(UserRepo userRepo){
+        this.userRepo = userRepo;
     }
 
     @Autowired
-    private ProfileRepository profileRepository;
-    public void setProfileRepository(ProfileRepository profileRepository){
-        this.profileRepository = profileRepository;
+    private ProfileRepo profileRepo;
+    public void setProfileRepo(ProfileRepo profileRepo){
+        this.profileRepo = profileRepo;
     }
 
     @Autowired
-    private ProfileImgRepository profileImgRepository;
-    public void setProfileImgRepository(ProfileImgRepository profileImgRepository){
-        this.profileImgRepository = profileImgRepository;
+    private ProfileImgRepo profileImgRepo;
+    public void setProfileImgRepo(ProfileImgRepo profileImgRepo){
+        this.profileImgRepo = profileImgRepo;
     }
 
     @Autowired
-    private ProfileBgImgRepository profileBgImgRepository;
-    public void setProfileBgImgRepository(ProfileBgImgRepository profileBgImgRepository){
-        this.profileBgImgRepository = profileBgImgRepository;
+    private ProfileBgImgRepo profileBgImgRepo;
+    public void setProfileBgImgRepo(ProfileBgImgRepo profileBgImgRepo){
+        this.profileBgImgRepo = profileBgImgRepo;
     }
 
     @Autowired
-    private ProfilePlayListRepository profilePlayListRepository;
-    public void setProfilePlayListRepository(ProfilePlayListRepository profilePlayListRepository){
-        this.profilePlayListRepository = profilePlayListRepository;
+    private ProfilePlayListRepo profilePlayListRepo;
+    public void setProfilePlayListRepo(ProfilePlayListRepo profilePlayListRepo){
+        this.profilePlayListRepo = profilePlayListRepo;
     }
 
     @Autowired
-    private MusicListRepository musicListRepository;
-    public void setMusicListRepository(MusicListRepository musicListRepository){
-        this.musicListRepository = musicListRepository;
+    private MusicListRepo musicListRepo;
+    public void setMusicListRepo(MusicListRepo musicListRepo){
+        this.musicListRepo = musicListRepo;
     }
 
     @Autowired
-    private MusicRepository musicRepository;
-    public void setMusicRepository(MusicRepository musicRepository){
-        this.musicRepository = musicRepository;
+    private MusicRepo musicRepo;
+    public void setMusicRepo(MusicRepo musicRepo){
+        this.musicRepo = musicRepo;
     }
 
 
@@ -62,14 +62,14 @@ public class UserService {
         ProfileImgDto mainProfileImg = null;
         ProfileMusicDto mainMusic = null;
 
-        me = userRepository.findUserById(userId);
+        me = userRepo.findUserById(userId);
 
-        Profile profile = profileRepository.getMainProfile(userId);
+        Profile profile = profileRepo.getMainProfile(userId);
         if (!profile.isMultiProfile()) {
             mainProfile = new ProfileDto(profile.getId(), profile.getName(), profile.getStatusMessage());
         }
 
-        List<ProfileImg> profileImgList = profileImgRepository.findProfileImgById(mainProfile.getId());
+        List<ProfileImg> profileImgList = profileImgRepo.findProfileImgById(mainProfile.getId());
         for (ProfileImg p : profileImgList){
             if (p.isMain()){
                 mainProfileImg = new ProfileImgDto(p.getId(), p.getImgAddress(), p.isMain(), p.isPrivate());
@@ -77,10 +77,10 @@ public class UserService {
             }
         }
 
-        ProfilePlayList profilePlayList = profilePlayListRepository.findProfilePlayListById(mainProfile.getId());
-        MusicList musicList = musicListRepository.getMyMainMusicList(profilePlayList.getId());
+        ProfilePlayList profilePlayList = profilePlayListRepo.findProfilePlayListById(mainProfile.getId());
+        MusicList musicList = musicListRepo.getMyMainMusicList(profilePlayList.getId());
         if (musicList != null) {
-            Music temp = musicRepository.findMusicById(musicList.getMusic().getId());
+            Music temp = musicRepo.findMusicById(musicList.getMusic().getId());
             mainMusic = new ProfileMusicDto(temp.getId(), temp.getAlbumCoverImgAddress(), temp.getTitle(),
                                     temp.getSinger(), temp.getGenre(), temp.getLyrics());
         }
@@ -98,29 +98,29 @@ public class UserService {
         ProfilePlayListDto profilePlayListDto;
         ArrayList<ProfileMusicDto> musicLists = new ArrayList<>();
 
-        me = userRepository.findUserById(userId);
+        me = userRepo.findUserById(userId);
 
-        Profile mainProfilep = profileRepository.getMainProfile(userId);
+        Profile mainProfilep = profileRepo.getMainProfile(userId);
         if (!mainProfilep.isMultiProfile()) { // 멀티 프로필이 아닌 기본 프로필
             profile = new ProfileDto(mainProfilep.getId(), mainProfilep.getName(), mainProfilep.getStatusMessage());
         }
 
-        ArrayList<ProfileImg> profileImgs = profileImgRepository.getProfileImgByProfileId(profile.getId());
+        ArrayList<ProfileImg> profileImgs = profileImgRepo.getProfileImgByProfileId(profile.getId());
         for (ProfileImg p : profileImgs){
             profileImgList.add(new ProfileImgDto(p.getId(), p.getImgAddress(), p.isMain(), p.isPrivate()));
         }
 
-        ArrayList<ProfileBgImg> profileBgImgs =profileBgImgRepository.getProfileImgByProfileId(profile.getId());
+        ArrayList<ProfileBgImg> profileBgImgs = profileBgImgRepo.getProfileImgByProfileId(profile.getId());
         for (ProfileBgImg p : profileBgImgs){
             profileBgImgList.add(new ProfileBgImgDto(p.getId(), p.getImgAddress(), p.isMain(), p.isPrivate()));
         }
 
-        ProfilePlayList tmpPList = profilePlayListRepository.findProfilePlayListById(profile.getId());
+        ProfilePlayList tmpPList = profilePlayListRepo.findProfilePlayListById(profile.getId());
         profilePlayListDto = new ProfilePlayListDto(tmpPList.getId(), tmpPList.getCreateDateTime(), tmpPList.getUpdateDateTime());
 
-        ArrayList<MusicList> tempMusicList= musicListRepository.getMyAllMusicList(profile.getId());
+        ArrayList<MusicList> tempMusicList= musicListRepo.getMyAllMusicList(profile.getId());
         for (MusicList m : tempMusicList){
-            Music music = musicRepository.findMusicById(m.getMusic().getId());
+            Music music = musicRepo.findMusicById(m.getMusic().getId());
             musicLists.add(new ProfileMusicDto(music.getId(), music.getAlbumCoverImgAddress(), music.getTitle(),
                                                 music.getSinger(), music.getGenre(), music.getLyrics()));
         }
