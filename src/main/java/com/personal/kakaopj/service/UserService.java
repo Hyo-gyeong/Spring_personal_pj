@@ -98,10 +98,10 @@ public class UserService {
     // 기본 프로필 정보 : 이름, 상태 메시지, 프로필 사진, 프로필 배경 사진, 플레이리스트 및 음악
     public UserDetailProfileDto getMyDetailProfile(long userId){
         User me;
-        ProfileDto prof;
+        ProfileDto prof = null;
         ArrayList<ProfileImgDto> profImgList = new ArrayList<>();
         ArrayList<ProfileBgImgDto> profBgImgList = new ArrayList<>();
-        ProfilePlayListDto profPlayListDto;
+        ProfilePlayListDto profPlayListDto = null;
         ArrayList<ProfileMusicDto> musicLists = new ArrayList<>();
 
         me = userRepo.findUserById(userId);
@@ -110,30 +110,32 @@ public class UserService {
         if (mainProfile != null && !mainProfile.isMultiProfile()) { // 멀티 프로필이 아닌 기본 프로필
             prof = new ProfileDto(mainProfile.getId(), mainProfile.getName(), mainProfile.getStatusMessage());
 
-            ArrayList<ProfileImg> profileImgs = profileImgRepo.getProfileImgByProfileId(prof.getId());
+            ArrayList<ProfileImg> profileImgs = profileImgRepo.getProfileImgByProfileId(mainProfile.getId());
             for (ProfileImg p : profileImgs) {
                 profImgList.add(new ProfileImgDto(p.getId(), p.getImgAddress(), p.isMain(), p.isPrivate()));
             }
 
-            ArrayList<ProfileBgImg> profileBgImgs = profileBgImgRepo.getProfileBgImgByProfileId(prof.getId());
+            ArrayList<ProfileBgImg> profileBgImgs = profileBgImgRepo.getProfileBgImgByProfileId(mainProfile.getId());
             for (ProfileBgImg p : profileBgImgs) {
                 profBgImgList.add(new ProfileBgImgDto(p.getId(), p.getImgAddress(), p.isMain(), p.isPrivate()));
             }
 
-            ProfilePlayList tmpPList = profilePlayListRepo.findProfilePlayListById(prof.getId());
-            profPlayListDto = new ProfilePlayListDto(tmpPList.getId(), tmpPList.getCreateDateTime(), tmpPList.getUpdateDateTime());
-
-            ArrayList<MusicList> tempMusicList = musicListRepo.getMyAllMusicList(prof.getId());
-            for (MusicList ml : tempMusicList) {
-                Music m = musicRepo.findMusicById(ml.getMusic().getId());
-                musicLists.add(new ProfileMusicDto(m.getId(), m.getAlbumCoverImgAddress(), m.getTitle(),
-                        m.getSinger(), m.getGenre(), m.getLyrics()));
+            ProfilePlayList tmpPList = profilePlayListRepo.findProfilePlayListById(mainProfile.getId());
+            if (tmpPList != null) {
+                profPlayListDto = new ProfilePlayListDto(tmpPList.getId(), tmpPList.getCreateDateTime(), tmpPList.getUpdateDateTime());
             }
 
-            return new UserDetailProfileDto(me.getId(), me.getName(), prof, profPlayListDto, profImgList,
-                    profBgImgList, musicLists);
+            ArrayList<MusicList> tempMusicList = musicListRepo.getMyAllMusicList(mainProfile.getId());
+            if (tempMusicList != null){
+                for (MusicList ml : tempMusicList) {
+                    Music m = musicRepo.findMusicById(ml.getMusic().getId());
+                    musicLists.add(new ProfileMusicDto(m.getId(), m.getAlbumCoverImgAddress(), m.getTitle(),
+                            m.getSinger(), m.getGenre(), m.getLyrics()));
+                }
+            }
         }
-        return new UserDetailProfileDto(me.getId(), me.getName(), null, null, null, null, null);
+        return new UserDetailProfileDto(me.getId(), me.getName(), prof, profPlayListDto, profImgList,
+                profBgImgList, musicLists);
     }
 
 }
