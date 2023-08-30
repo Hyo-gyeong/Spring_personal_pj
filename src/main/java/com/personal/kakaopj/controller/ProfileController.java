@@ -1,9 +1,10 @@
 package com.personal.kakaopj.controller;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.personal.kakaopj.dto.ProfileBgImgDto;
 import com.personal.kakaopj.dto.ProfileDto;
+import com.personal.kakaopj.dto.ProfileImgDto;
 import com.personal.kakaopj.service.ProfileBgImgService;
+import com.personal.kakaopj.service.ProfileImgService;
 import com.personal.kakaopj.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,13 @@ public class ProfileController {
         this.profileBgImgService = profileBgImgService;
     }
 
+    @Autowired
+    private ProfileImgService profileImgService;
+
+    public void setProfileImgService(ProfileImgService profileImgService) {
+        this.profileImgService = profileImgService;
+    }
+
     // 내 프로필 이름, 상태 메시지 수정
     @PatchMapping("my-profile/edit/{profileId}")
     public ProfileDto myProfileEdit(@PathVariable long profileId, @RequestParam String name,
@@ -45,5 +53,17 @@ public class ProfileController {
     @DeleteMapping("my-profile/bg-img/delete/{bgImgId}")
     public void myProfileBgImgRemove(@PathVariable Long bgImgId){
         profileBgImgService.removeProfileBgImg(bgImgId);
+    }
+
+    // 내 프로필 이미지 수정 - 추가
+    @PostMapping("my-profile/img/create/{profileId}")
+    public ArrayList<ProfileImgDto> myProfileImgAdd(@PathVariable long profileId, @RequestParam String img) throws ParseException {
+        return profileImgService.addProfileImg(profileId, img);
+    }
+
+    // 내 프로필 이미지 수정 - 삭제
+    @DeleteMapping("my-profile/img/delete/{imgId}")
+    public void myProfileImgRemove(@PathVariable Long imgId){
+        profileImgService.removeProfileImg(imgId);
     }
 }
