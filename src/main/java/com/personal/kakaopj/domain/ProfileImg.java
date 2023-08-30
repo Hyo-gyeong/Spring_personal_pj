@@ -44,4 +44,15 @@ public class ProfileImg {
     @Column(name="update_date_time")
     private LocalDateTime updateDateTime;
 
+    public ProfileImg(){}
+    public ProfileImg(Profile profile, String imgAddress, boolean isMain, boolean isPrivate){
+        super();
+        this.profile = profile;
+        this.imgAddress = imgAddress;
+        this.isMain = isMain;
+        this.isPrivate = isPrivate;
+        this.createDateTime = LocalDateTime.now();
+        this.updateDateTime = LocalDateTime.now();
+    }
+
 }
