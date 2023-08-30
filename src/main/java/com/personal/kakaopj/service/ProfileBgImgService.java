@@ -51,4 +51,8 @@ public class ProfileBgImgService {
         }
         return profileBgImgDtoList;
     }
+
+    public void removeProfileBgImg(Long bgImgId){
+        profileBgImgRepo.deleteById(bgImgId);
+    }
 }

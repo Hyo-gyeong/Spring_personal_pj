@@ -8,9 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 @Repository
 public interface ProfileBgImgRepo extends JpaRepository<ProfileBgImg, Long> {
@@ -21,4 +19,6 @@ public interface ProfileBgImgRepo extends JpaRepository<ProfileBgImg, Long> {
     @Modifying(clearAutomatically = true)
     @Query(value = "update ProfileBgImg set is_main = 0 where profile_id = :id", nativeQuery = true)
     void changeAllBgImgNotMain(@Param("id") long profileId);
+
+    void deleteById(Long bgImgId);
 }

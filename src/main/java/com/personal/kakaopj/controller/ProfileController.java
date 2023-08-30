@@ -36,10 +36,14 @@ public class ProfileController {
     }
 
     // 내 프로필 배경 이미지 수정 - 추가
-    @PostMapping("my-profile/bg-img/edit/{profileId}")
-    public ArrayList<ProfileBgImgDto> myProfileBgImgAdd(@PathVariable long profileId, @RequestParam String bgimg) throws ParseException {
-        return profileBgImgService.addProfileBgImg(profileId, bgimg);
+    @PostMapping("my-profile/bg-img/create/{profileId}")
+    public ArrayList<ProfileBgImgDto> myProfileBgImgAdd(@PathVariable long profileId, @RequestParam String bgImg) throws ParseException {
+        return profileBgImgService.addProfileBgImg(profileId, bgImg);
     }
 
     // 내 프로필 배경 이미지 수정 - 삭제
+    @DeleteMapping("my-profile/bg-img/delete/{bgImgId}")
+    public void myProfileBgImgRemove(@PathVariable Long bgImgId){
+        profileBgImgService.removeProfileBgImg(bgImgId);
+    }
 }
