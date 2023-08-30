@@ -83,11 +83,13 @@ public class UserService {
 
         if (mainProfile != null) {
             ProfilePlayList profPlayList = profilePlayListRepo.findProfilePlayListById(mainProfile.getId());
-            MusicList musicList = musicListRepo.getMyMainMusicList(profPlayList.getId());
-            if (musicList != null) {
-                Music m = musicRepo.findMusicById(musicList.getMusic().getId());
-                mainMusic = new ProfileMusicDto(m.getId(), m.getAlbumCoverImgAddress(), m.getTitle(),
-                        m.getSinger(), m.getGenre(), m.getLyrics());
+            if (profPlayList != null) {
+                MusicList musicList = musicListRepo.getMyMainMusicList(profPlayList.getId());
+                if (musicList != null) {
+                    Music m = musicRepo.findMusicById(musicList.getMusic().getId());
+                    mainMusic = new ProfileMusicDto(m.getId(), m.getAlbumCoverImgAddress(), m.getTitle(),
+                            m.getSinger(), m.getGenre(), m.getLyrics());
+                }
             }
         }
         return new UserProfileDto(me.getId(), me.getName(), mainProfile, mainProfileImg, mainMusic);
