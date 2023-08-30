@@ -22,7 +22,7 @@ public class UserController {
         return userService.getMyProfile(userId);
     }
 
-    // 내 프로필 상세 정보
+    // 내 프로필 상세 정보 : 이름, 상태 메시지, 프로필 사진 목록, 프로필 배경 사진 목록, 플레이리스트 및 음악목록
     @GetMapping("/me/detail/{userId}")
     public UserDetailProfileDto myDetailProfile(@PathVariable long userId){
         return userService.getMyDetailProfile(userId);
