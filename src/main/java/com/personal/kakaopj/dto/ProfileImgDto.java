@@ -1,13 +1,7 @@
 package com.personal.kakaopj.dto;
 
-import com.personal.kakaopj.domain.Profile;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Getter
 @Setter
