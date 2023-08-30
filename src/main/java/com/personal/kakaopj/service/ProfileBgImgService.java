@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 @Service
 public class ProfileBgImgService {
@@ -47,12 +46,14 @@ public class ProfileBgImgService {
                 profileBgImgDtoList.add(new ProfileBgImgDto(p.getId(), p.getImgAddress(), p.isMain(), p.isPrivate()));
             }
             // 최신 이미지 우선 반환
-            Collections.sort(profileBgImgDtoList, Collections.reverseOrder());
+//            Collections.sort(profileBgImgDtoList, Collections.reverseOrder());
         }
         return profileBgImgDtoList;
     }
 
     public void removeProfileBgImg(Long bgImgId){
-        profileBgImgRepo.deleteById(bgImgId);
+        if (profileBgImgRepo.ifProfileBgImgExist(bgImgId) != null) {
+            profileBgImgRepo.deleteById(bgImgId);
+        }
     }
 }

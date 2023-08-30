@@ -1,6 +1,7 @@
 package com.personal.kakaopj.repository;
 
 import com.personal.kakaopj.domain.ProfileBgImg;
+import com.personal.kakaopj.domain.ProfileImg;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,8 @@ public interface ProfileBgImgRepo extends JpaRepository<ProfileBgImg, Long> {
     void changeAllBgImgNotMain(@Param("id") long profileId);
 
     void deleteById(Long bgImgId);
+
+    @Query(value = "select * from ProfileBgImg where profile_bg_img_id = :id", nativeQuery = true)
+    ProfileBgImg ifProfileBgImgExist(@Param("id") long bgImgId);
+
 }
