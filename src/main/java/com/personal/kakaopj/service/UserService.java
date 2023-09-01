@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,11 +65,8 @@ public class UserService {
         // password encoding
         String encodedPW = passwordEncoder.encode(password);
 
-        // calculate BD : input ex)19970516
-        int year = Integer.parseInt(birthday.substring(0,4));
-        int month = Integer.parseInt(birthday.substring(4,6));
-        int date = Integer.parseInt(birthday.substring(6,8));
-        LocalDate BD = LocalDate.of(year, month, date);
+        // input ex)19970516 -> 1997-05-16
+        LocalDate BD = LocalDate.parse(birthday, DateTimeFormatter.BASIC_ISO_DATE);
 
         User newUser = new User(email, encodedPW, phone, BD, name);
         userRepo.save(newUser);
