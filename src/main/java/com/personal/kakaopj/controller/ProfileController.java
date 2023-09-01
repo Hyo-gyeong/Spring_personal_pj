@@ -1,11 +1,10 @@
 package com.personal.kakaopj.controller;
 
-import com.personal.kakaopj.dto.ProfileBgImgDto;
-import com.personal.kakaopj.dto.ProfileDto;
-import com.personal.kakaopj.dto.ProfileImgDto;
+import com.personal.kakaopj.dto.*;
 import com.personal.kakaopj.service.ProfileBgImgService;
 import com.personal.kakaopj.service.ProfileImgService;
 import com.personal.kakaopj.service.ProfileService;
+import com.personal.kakaopj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +32,30 @@ public class ProfileController {
 
     public void setProfileImgService(ProfileImgService profileImgService) {
         this.profileImgService = profileImgService;
+    }
+
+    @Autowired
+    private UserService userService;
+    public void setUserService(UserService userService){
+        this.userService = userService;
+    }
+
+    // (index 화면) 내 프로필 정보 조회 : 이름, 상태 메세지, 대표 프로필 사진, 대표 음악
+    @GetMapping("me/{userId}")
+    public UserProfileDto myProfile(@PathVariable long userId){
+        return userService.getMyProfile(userId);
+    }
+
+    // 내 멀티프로필 리스트 정보 조회 : 이름, 상태 메세지, 대표 프로필 사진
+    @GetMapping("multi-profile/list/{userId}")
+    public ArrayList<UserMultiProfileDto> myMultiProfileList(@PathVariable long userId){
+        return userService.getMyMultiProfileList(userId);
+    }
+
+    // 내 프로필 상세 정보 : 이름, 상태 메시지, 프로필 사진 목록, 프로필 배경 사진 목록, 플레이리스트 및 음악목록
+    @GetMapping("me/detail/{userId}")
+    public UserDetailProfileDto myDetailProfile(@PathVariable long userId){
+        return userService.getMyDetailProfile(userId);
     }
 
     // 내 프로필 이름, 상태 메시지 수정

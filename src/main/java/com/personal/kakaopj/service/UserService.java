@@ -56,7 +56,7 @@ public class UserService {
     }
 
 
-    // 기본 프로필 최소 정보 : 이름, 상태 매세제, 대표 프로필 사진, 대표 음악
+    // 기본 프로필 최소 정보 : 이름, 상태 메세지, 대표 프로필 사진, 대표 음악
     public UserProfileDto getMyProfile(long userId){
         User me;
         ProfileDto mainProfile = null;
@@ -66,12 +66,12 @@ public class UserService {
         me = userRepo.findUserById(userId);
 
         Profile profile = profileRepo.getMyMainProfile(userId);
-        if (profile != null && !profile.isMultiProfile()) {
+        if (profile != null) {
             mainProfile = new ProfileDto(profile.getId(), profile.getName(), profile.getStatusMessage());
         }
 
         if (mainProfile != null) {
-            List<ProfileImg> profImgList = profileImgRepo.findProfileImgById(mainProfile.getId());
+            List<ProfileImg> profImgList = profileImgRepo.findAllById(mainProfile.getId());
             if (profImgList != null) {
                 for (ProfileImg p : profImgList) {
                     if (p.isMain()) {
@@ -97,8 +97,32 @@ public class UserService {
 
     }
 
+    // 멀티 프로필 최소 정보 리스트: 이름, 상태 메세지, 대표 프로필 사진
+    public ArrayList<UserMultiProfileDto> getMyMultiProfileList(long userId){
+        ArrayList<UserMultiProfileDto> multiProfileDtoList = new ArrayList<>();
 
-    // 기본 프로필 정보 : 이름, 상태 메시지, 프로필 사진, 프로필 배경 사진, 플레이리스트 및 음악
+        ArrayList<Profile> multiProfileList = profileRepo.getMyMultiProfile(userId);
+        if (multiProfileList != null) {
+            for (Profile p : multiProfileList) {
+                ProfileDto tmpProfile = new ProfileDto(p.getId(), p.getName(), p.getStatusMessage());
+                List<ProfileImg> profImgList = profileImgRepo.getProfileImgByProfileId(p.getId());
+                ProfileImgDto tmpProfileImg = null;
+                if (profImgList != null) {
+                    for (ProfileImg pImg : profImgList) {
+                        if (pImg.isMain()) {
+                            tmpProfileImg = new ProfileImgDto(pImg.getId(), pImg.getImgAddress(), pImg.isMain(), pImg.isPrivate());
+                            break;
+                        }
+                    }
+                }
+                multiProfileDtoList.add(new UserMultiProfileDto(p.getId(), tmpProfile, tmpProfileImg));
+            }
+        }
+        return multiProfileDtoList;
+    }
+
+
+    // 기본 프로필 정보 : 이름, 상태 메세지, 프로필 사진, 프로필 배경 사진, 플레이리스트 및 음악
     public UserDetailProfileDto getMyDetailProfile(long userId){
         User me;
         ProfileDto prof = null;

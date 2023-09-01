@@ -12,12 +12,16 @@ import java.util.ArrayList;
 
 @Repository
 public interface ProfileRepo extends JpaRepository<Profile, Long> {
-    ArrayList<Profile> findProfileByUserId(long userId);
-
-    Profile findProfileById(long profileId);
+    @Query(value = "select * from Profile where user_id = :userId and is_multi_profile = 1", nativeQuery = true)
+    ArrayList<Profile> getMultiProfileByUserId(long userId);
 
     @Query(value = "select * from Profile where user_id = :userId and is_multi_profile = 0", nativeQuery = true)
     Profile getMyMainProfile(@Param("userId") long userId);
+
+    @Query(value = "select * from Profile where user_id = :userId and is_multi_profile = 1", nativeQuery = true)
+    ArrayList<Profile> getMyMultiProfile(@Param("userId") long userId);
+
+    Profile findProfileById(long profileId);
 
     @Transactional
     @Modifying(clearAutomatically = true)
