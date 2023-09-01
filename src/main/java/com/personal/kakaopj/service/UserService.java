@@ -4,14 +4,19 @@ import com.personal.kakaopj.domain.*;
 import com.personal.kakaopj.dto.*;
 import com.personal.kakaopj.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepo userRepo;
@@ -55,8 +60,25 @@ public class UserService {
         this.musicRepo = musicRepo;
     }
 
+    public UserDto signupUser(String email, String password, String phone, String birthday, String name){
+        // password encoding
+        String encodedPW = passwordEncoder.encode(password);
 
-    // 기본 프로필 최소 정보 : 이름, 상태 메세지, 대표 프로필 사진, 대표 음악
+        // calculate BD : input ex)19970516
+        int year = Integer.parseInt(birthday.substring(0,4));
+        int month = Integer.parseInt(birthday.substring(4,6));
+        int date = Integer.parseInt(birthday.substring(6,8));
+        LocalDate BD = LocalDate.of(year, month, date);
+
+        User newUser = new User(email, encodedPW, phone, BD, name);
+        userRepo.save(newUser);
+        UserDto userDto = new UserDto(newUser.getId(), newUser.getEmail(), newUser.getEmail(), newUser.getName(),
+                                        newUser.getKakaoId(), newUser.getIsBirthdayHidden());
+        return userDto;
+    }
+
+
+    // 기본 프로필 최소 정보 조회 : 이름, 상태 메세지, 대표 프로필 사진, 대표 음악
     public UserProfileDto getMyProfile(long userId){
         User me;
         ProfileDto mainProfile = null;
@@ -97,7 +119,7 @@ public class UserService {
 
     }
 
-    // 멀티 프로필 최소 정보 리스트: 이름, 상태 메세지, 대표 프로필 사진
+    // 멀티 프로필 최소 정보 리스트 조회 : 이름, 상태 메세지, 대표 프로필 사진
     public ArrayList<UserMultiProfileDto> getMyMultiProfileList(long userId){
         ArrayList<UserMultiProfileDto> multiProfileDtoList = new ArrayList<>();
 
@@ -122,7 +144,7 @@ public class UserService {
     }
 
 
-    // 기본 프로필 정보 : 이름, 상태 메세지, 프로필 사진, 프로필 배경 사진, 플레이리스트 및 음악
+    // 기본 프로필 정보 조회 : 이름, 상태 메세지, 프로필 사진, 프로필 배경 사진, 플레이리스트 및 음악
     public UserDetailProfileDto getMyDetailProfile(long userId){
         User me;
         ProfileDto prof = null;

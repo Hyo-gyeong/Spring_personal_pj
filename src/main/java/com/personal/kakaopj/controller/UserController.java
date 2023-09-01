@@ -5,7 +5,6 @@ import com.personal.kakaopj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 
 @RestController
 @RequestMapping("/")
@@ -15,6 +14,12 @@ public class UserController {
     private UserService userService;
     public void setUserService(UserService userService){
         this.userService = userService;
+    }
+
+    @PostMapping("signup")
+    public UserDto signup(@RequestParam String email, @RequestParam String password, @RequestParam String phone,
+                       @RequestParam String birthday, @RequestParam String name){
+        return userService.signupUser(email, password, phone, birthday, name);
     }
 
     // 내 설정 값 조회 : 카카오 ID, email, 전화번호 etc
