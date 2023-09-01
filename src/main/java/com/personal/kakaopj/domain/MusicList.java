@@ -9,18 +9,18 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "MusicList")
-@SequenceGenerator(
-        name = "MUSIC_LIST_SEQ_GENERATOR",
-        sequenceName = "MUSIC_LIST_SEQ", // 시퀸스 명
-        initialValue = 1, // 초기 값
-        allocationSize = 1 // 미리 할당 받을 시퀸스 수
-)
+//@SequenceGenerator(
+//        name = "MUSIC_LIST_SEQ_GENERATOR",
+//        sequenceName = "MUSIC_LIST_SEQ", // 시퀸스 명
+//        initialValue = 1, // 초기 값
+//        allocationSize = 1 // 미리 할당 받을 시퀸스 수
+//)
 @Setter
 @Getter
 @ToString
 public class MusicList {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MUSIC_LIST_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="music_list_id")
     private Long id;
 

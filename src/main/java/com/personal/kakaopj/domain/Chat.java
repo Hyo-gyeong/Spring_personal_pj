@@ -10,18 +10,18 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Chat")
-@SequenceGenerator(
-        name = "CHAT_SEQ_GENERATOR",
-        sequenceName = "CHAT_SEQ", // 시퀸스 명
-        initialValue = 1, // 초기 값
-        allocationSize = 1 // 미리 할당 받을 시퀸스 수
-)
+//@SequenceGenerator(
+//        name = "CHAT_SEQ_GENERATOR",
+//        sequenceName = "CHAT_SEQ", // 시퀸스 명
+//        initialValue = 1, // 초기 값
+//        allocationSize = 1 // 미리 할당 받을 시퀸스 수
+//)
 @Setter
 @Getter
 @ToString
 public class Chat {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHAT_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chat_id")
     private Long id;
 

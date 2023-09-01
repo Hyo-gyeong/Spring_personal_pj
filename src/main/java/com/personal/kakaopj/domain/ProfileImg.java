@@ -9,18 +9,18 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ProfileImg")
-@SequenceGenerator(
-        name = "PROFILE_IMG_SEQ_GENERATOR",
-        sequenceName = "PROFILE_IMG_SEQ", // 시퀸스 명
-        initialValue = 1, // 초기 값
-        allocationSize = 1 // 미리 할당 받을 시퀸스 수
-)
+//@SequenceGenerator(
+//        name = "PROFILE_IMG_SEQ_GENERATOR",
+//        sequenceName = "PROFILE_IMG_SEQ", // 시퀸스 명
+//        initialValue = 1, // 초기 값
+//        allocationSize = 1 // 미리 할당 받을 시퀸스 수
+//)
 @Setter
 @Getter
 @ToString
 public class ProfileImg {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROFILE_IMG_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_img_id")
     private Long id;
 

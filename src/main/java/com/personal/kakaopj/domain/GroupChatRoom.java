@@ -5,15 +5,15 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "GroupChatRoom")
-@SequenceGenerator(
-        name = "GROUP_CHAT_ROOM_SEQ_GENERATOR",
-        sequenceName = "GROUP_CHAT_ROOM_SEQ", // 시퀸스 명
-        initialValue = 1, // 초기 값
-        allocationSize = 1 // 미리 할당 받을 시퀸스 수
-)
+//@SequenceGenerator(
+//        name = "GROUP_CHAT_ROOM_SEQ_GENERATOR",
+//        sequenceName = "GROUP_CHAT_ROOM_SEQ", // 시퀸스 명
+//        initialValue = 1, // 초기 값
+//        allocationSize = 1 // 미리 할당 받을 시퀸스 수
+//)
 public class GroupChatRoom {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GROUP_CHAT_ROOM_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_chatroom_id")
     private Long id;
 

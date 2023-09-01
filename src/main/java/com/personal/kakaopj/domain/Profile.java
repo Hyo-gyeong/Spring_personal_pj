@@ -3,6 +3,7 @@ package com.personal.kakaopj.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,18 +11,18 @@ import java.util.List;
 
 @Entity
 @Table(name = "Profile")
-@SequenceGenerator(
-        name = "PROFILE_SEQ_GENERATOR",
-        sequenceName = "PROFILE_SEQ", // 시퀸스 명
-        initialValue = 1, // 초기 값
-        allocationSize = 1 // 미리 할당 받을 시퀸스 수
-)
+//@SequenceGenerator(
+//        name = "PROFILE_SEQ_GENERATOR",
+//        sequenceName = "PROFILE_SEQ", // 시퀸스 명
+//        initialValue = 1, // 초기 값
+//        allocationSize = 1 // 미리 할당 받을 시퀸스 수
+//)
 @Setter
 @Getter
 @ToString
 public class Profile {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROFILE_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="profile_id")
     private Long id;
 
@@ -33,6 +34,7 @@ public class Profile {
     private String name;
 
     @Column(name="status_message")
+    @Nullable
     private String statusMessage;
 
     @Column(name="is_multi_profile")
@@ -45,8 +47,22 @@ public class Profile {
     private LocalDateTime updateDateTime;
 
     @OneToOne(mappedBy = "profile")
+    @Nullable
     private ProfilePlayList profilePlayList;
 
     @OneToMany(mappedBy = "profile")
+    @Nullable
     private List<ProfileImg> profileImgList;
+
+    public Profile (User user, String name, String statusMessage, boolean isMultiProfile, ProfilePlayList profilePlayList,
+                   List<ProfileImg> profileImgList){
+        this.user = user;
+        this.name = name;
+        this.statusMessage = statusMessage;
+        this.isMultiProfile = isMultiProfile;
+        this.profilePlayList = profilePlayList;
+        this.profileImgList = profileImgList;
+        this.createDateTime = LocalDateTime.now();
+        this.updateDateTime = LocalDateTime.now();
+    }
 }

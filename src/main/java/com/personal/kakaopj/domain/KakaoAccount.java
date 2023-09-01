@@ -9,18 +9,18 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "KakaoAccount")
-@SequenceGenerator(
-        name = "KAKAO_ACCOUNT_SEQ_GENERATOR",
-        sequenceName = "KAKAO_ACCOUNT_SEQ", // 시퀸스 명
-        initialValue = 1, // 초기 값
-        allocationSize = 1 // 미리 할당 받을 시퀸스 수
-)
+//@SequenceGenerator(
+//        name = "KAKAO_ACCOUNT_SEQ_GENERATOR",
+//        sequenceName = "KAKAO_ACCOUNT_SEQ", // 시퀸스 명
+//        initialValue = 1, // 초기 값
+//        allocationSize = 1 // 미리 할당 받을 시퀸스 수
+//)
 @Setter
 @Getter
 @ToString
 public class KakaoAccount {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "KAKAO_ACCOUNT_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "kakao_account_id")
     private Long id;
 

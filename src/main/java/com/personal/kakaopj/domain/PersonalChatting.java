@@ -8,18 +8,18 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "PersonalChatting")
-@SequenceGenerator(
-        name = "PERSONAL_CHATTING_SEQ_GENERATOR",
-        sequenceName = "PERSONAL_CHATTING_SEQ", // 시퀸스 명
-        initialValue = 1, // 초기 값
-        allocationSize = 1 // 미리 할당 받을 시퀸스 수
-)
+//@SequenceGenerator(
+//        name = "PERSONAL_CHATTING_SEQ_GENERATOR",
+//        sequenceName = "PERSONAL_CHATTING_SEQ", // 시퀸스 명
+//        initialValue = 1, // 초기 값
+//        allocationSize = 1 // 미리 할당 받을 시퀸스 수
+//)
 @Setter
 @Getter
 @ToString
 public class PersonalChatting {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PERSONAL_CHATTING_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "personal_chatting_id")
     private Long id;
 
