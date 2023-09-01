@@ -6,6 +6,7 @@ import com.personal.kakaopj.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,4 +141,24 @@ public class UserService {
                 profBgImgList, musicLists);
     }
 
+    // 내 설정 값 조회
+    public UserDto getMySettingInfo(long userId){
+        User user = userRepo.findUserById(userId);
+        UserDto userDto = new UserDto(user.getId(), user.getEmail(), user.getPhoneNumber(), user.getName(),
+                                        user.getKakaoId(), user.getIsBirthdayHidden());
+        return userDto;
+    }
+
+    // 내 설정 값 수정
+    public UserDto editMySettingInfo(long userId, String kakaoId, String phoneNumber, boolean isBDHidden){
+        User user = userRepo.findUserById(userId);
+        if (user != null) {
+            userRepo.updateUser(kakaoId, phoneNumber, isBDHidden, LocalDateTime.now(), userId);
+            user = userRepo.findUserById(userId);
+            UserDto userDto = new UserDto(user.getId(), user.getEmail(), user.getPhoneNumber(),
+                                            user.getName(), user.getKakaoId(), user.getIsBirthdayHidden());
+            return userDto;
+        }
+        return null;
+    }
 }
