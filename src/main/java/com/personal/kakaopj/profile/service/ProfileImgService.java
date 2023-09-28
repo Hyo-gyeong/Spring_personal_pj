@@ -1,5 +1,6 @@
 package com.personal.kakaopj.profile.service;
 
+import com.personal.kakaopj.config.exception.BaseException;
 import com.personal.kakaopj.profile.domain.Profile;
 import com.personal.kakaopj.profile.domain.ProfileImg;
 import com.personal.kakaopj.profile.dto.ProfileImgDto;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.personal.kakaopj.config.exception.ErrorCode.*;
 
 @Service
 public class ProfileImgService {
@@ -28,8 +31,7 @@ public class ProfileImgService {
         this.profileRepo = profileRepo;
     }
 
-    public HashMap<ArrayList<ProfileImgDto>, String> addProfileImg(long profileId, String img){
-        HashMap<ArrayList<ProfileImgDto>, String> map = new HashMap<>();
+    public ArrayList<ProfileImgDto> addProfileImg(long profileId, String img){
         // 모든 프로필 배경화면 main에서 제외
         profileImgRepo.changeAllImgNotMain(profileId);
         // 프로필 배경 이미지가 들어갈 프로필 존재여부
@@ -40,8 +42,7 @@ public class ProfileImgService {
             profileImgRepo.save(profileImg);
         }
         else {
-            map.put(null, "no such profile exists");
-            return map;
+            throw new BaseException(NO_PROFILE_EXIST);
         }
 
         ArrayList<ProfileImg> profileImgList = profileImgRepo.getProfileImgByProfileId(profileId);
@@ -51,23 +52,19 @@ public class ProfileImgService {
                 profileImgDtoList.add(new ProfileImgDto(p));
             }
         }
-        map.put(profileImgDtoList, "");
-        return map;
+        return profileImgDtoList;
     }
 
-    public HashMap<Integer, String>  removeProfileImg(Long imgId) throws Exception{
-        HashMap<Integer, String> map = new HashMap<>();
+    public void removeProfileImg(Long imgId) throws Exception{
         if (profileImgRepo.ifProfileImgExist(imgId) != null) {
             try{
                 profileImgRepo.deleteById(imgId);
-                map.put(200, "");
             }catch (Exception e){
-                map.put(400, e.getMessage());
+                throw new BaseException(SERVER_ERROR);
             }
         }
         else {
-            map.put(404, "no such profile img exists");
+            throw new BaseException(NO_PROFILE_EXIST);
         }
-        return map;
     }
 }

@@ -2,7 +2,6 @@ package com.personal.kakaopj.account.service;
 
 import com.personal.kakaopj.account.dto.UserSignupDto;
 import com.personal.kakaopj.profile.domain.Profile;
-import com.personal.kakaopj.profile.repository.ProfilePlayListRepo;
 import com.personal.kakaopj.profile.repository.ProfileRepo;
 import com.personal.kakaopj.user.domain.User;
 import com.personal.kakaopj.user.dto.UserDto;
@@ -36,6 +35,7 @@ public class AccountService {
 
         User newUser = new User(dto);
         // sign up
+        // 이미 존재하는 유저 처리
         userRepo.save(newUser);
         // create basic profile
         profileRepo.save(new Profile(newUser));

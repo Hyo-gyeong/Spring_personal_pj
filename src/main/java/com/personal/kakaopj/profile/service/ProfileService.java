@@ -1,5 +1,6 @@
 package com.personal.kakaopj.profile.service;
 
+import com.personal.kakaopj.config.exception.BaseException;
 import com.personal.kakaopj.music.domain.Music;
 import com.personal.kakaopj.music.domain.MusicList;
 import com.personal.kakaopj.music.dto.ProfileMusicDto;
@@ -15,7 +16,6 @@ import com.personal.kakaopj.profile.dto.ProfilePlayListDto;
 import com.personal.kakaopj.profile.repository.*;
 import com.personal.kakaopj.user.domain.User;
 import com.personal.kakaopj.user.dto.UserDetailProfileDto;
-import com.personal.kakaopj.user.dto.UserMultiProfileDto;
 import com.personal.kakaopj.user.dto.UserProfileDto;
 import com.personal.kakaopj.user.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.personal.kakaopj.config.exception.ErrorCode.*;
+
 @Service
-public class ProfileService {
+public class ProfileService extends RuntimeException{
 
     @Autowired
     private UserRepo userRepo;
@@ -75,21 +77,20 @@ public class ProfileService {
     }
 
     // 프로필 정보 수정 : 이름, 메시지, 배경 이미지, 프로필 이미지
-    public HashMap<Integer, String> editMyProfile(ProfileDto profileDto) throws Exception{
-        HashMap<Integer, String> map = new HashMap<>();
+    public ProfileDto editMyProfile(ProfileDto profileDto) throws Exception{
         // 프로필 이름, 상태메시지 수정
         try {
             profileRepo.updateUserProfile(profileDto);
-            map.put(200, "update succeed");
+            Profile updatedProfile = profileRepo.findProfileById(profileDto.getId());
+            ProfileDto dto = new ProfileDto(updatedProfile);
+            return dto;
         }catch (Exception e){
-            map.put(422, e.getMessage());
+            throw new BaseException(No_USER_EXIST);
         }
-        return map;
     }
 
     // 기본 프로필 최소 정보 조회 : 이름, 상태 메세지, 대표 프로필 사진, 대표 음악
-    public HashMap<UserProfileDto, String> getMyProfile(long userId){
-        HashMap<UserProfileDto, String> map = new HashMap<>();
+    public UserProfileDto getMyProfile(long userId){
         User me;
         ProfileDto mainProfile;
         ProfileImgDto mainProfileImg = null;
@@ -98,15 +99,13 @@ public class ProfileService {
         // user 존재여부
         me = userRepo.findUserById(userId);
         if (me == null) {
-            map.put(null, "no user exists");
-            return map;
+            throw new BaseException(No_USER_EXIST); //UncheckedException 던짐
         }
 
         // profile 존재여부
         Profile profile = profileRepo.getMyMainProfile(userId);
         if (profile == null) {
-            map.put(null, "no profile exists");
-            return map;
+            throw new BaseException(No_USER_EXIST);
         }
         else {
             mainProfile = new ProfileDto(profile);
@@ -136,45 +135,12 @@ public class ProfileService {
                     profilePlayListRepo.delete(profPlayList);
                 }
             }
-            map.put(new UserProfileDto(me, mainProfile, mainProfileImg, mainMusic), "");
-            return map;
+            return new UserProfileDto(me, mainProfile, mainProfileImg, mainMusic);
         }
     }
-
-    // 멀티 프로필 최소 정보 리스트 조회 : 이름, 상태 메세지, 대표 프로필 사진
-    public HashMap<ArrayList<UserMultiProfileDto>, String> getMyMultiProfileList(long userId){
-        HashMap<ArrayList<UserMultiProfileDto>, String> map = new HashMap<>();
-        ArrayList<UserMultiProfileDto> multiProfileDtoList = new ArrayList<>();
-        ArrayList<Profile> multiProfileList = profileRepo.getMyMultiProfile(userId);
-
-        if (multiProfileList != null) {
-            for (Profile p : multiProfileList) {
-                ProfileDto tmpProfile = new ProfileDto(p);
-                List<ProfileImg> profImgList = profileImgRepo.getProfileImgByProfileId(p.getId());
-                ProfileImgDto tmpProfileImg = null;
-                if (profImgList != null) {
-                    for (ProfileImg pImg : profImgList) {
-                        if (pImg.isMain()) {
-                            tmpProfileImg = new ProfileImgDto(pImg);
-                            break;
-                        }
-                    }
-                }
-                UserMultiProfileDto userMultiProfileDto = new UserMultiProfileDto(p.getId(), tmpProfile, tmpProfileImg);
-                multiProfileDtoList.add(userMultiProfileDto);
-            }
-            map.put(multiProfileDtoList, "");
-        }
-        else {
-            map.put(null, "no multi profile exists");
-        }
-        return map;
-    }
-
 
     // 기본 프로필 정보 조회 : 이름, 상태 메세지, 프로필 사진, 프로필 배경 사진, 플레이리스트 및 음악
-    public HashMap<UserDetailProfileDto, String> getMyDetailProfile(long userId){
-        HashMap<UserDetailProfileDto, String> map = new HashMap<>();
+    public UserDetailProfileDto getMyDetailProfile(long userId){
         User me;
         ProfileDto prof;
         ArrayList<ProfileImgDto> profImgList = new ArrayList<>();
@@ -185,8 +151,7 @@ public class ProfileService {
         // user 존재여부
         me = userRepo.findUserById(userId);
         if (me == null) {
-            map.put(null, "no user exists");
-            return map;
+            throw new BaseException(No_USER_EXIST);
         }
 
         // 기본 프로필 존재여부 (멀티프로필 x)
@@ -223,12 +188,10 @@ public class ProfileService {
                     musicLists.add(pmdto);
                 }
             }
-            map.put(new UserDetailProfileDto(me, prof, profPlayListDto, profImgList, profBgImgList, musicLists), "");
-            return map;
+            return new UserDetailProfileDto(me, prof, profPlayListDto, profImgList, profBgImgList, musicLists);
         }
         else {
-            map.put(null, "no basic profile exists");
-            return map;
+            throw new BaseException(No_USER_EXIST);
         }
     }
 }

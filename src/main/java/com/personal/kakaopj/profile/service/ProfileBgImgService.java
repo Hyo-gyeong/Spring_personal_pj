@@ -1,5 +1,6 @@
 package com.personal.kakaopj.profile.service;
 
+import com.personal.kakaopj.config.exception.BaseException;
 import com.personal.kakaopj.profile.domain.Profile;
 import com.personal.kakaopj.profile.domain.ProfileBgImg;
 import com.personal.kakaopj.profile.dto.ProfileBgImgDto;
@@ -9,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import static com.personal.kakaopj.config.exception.ErrorCode.*;
 
 @Service
 public class ProfileBgImgService {
@@ -54,19 +56,16 @@ public class ProfileBgImgService {
         return profileBgImgDtoList;
     }
 
-    public HashMap<Integer, String> removeProfileBgImg(Long bgImgId) throws Exception{
-        HashMap<Integer, String> map = new HashMap<>();
+    public void removeProfileBgImg(Long bgImgId) throws Exception{
         if (profileBgImgRepo.ifProfileBgImgExist(bgImgId) != null) {
             try {
                 profileBgImgRepo.deleteById(bgImgId);
-                map.put(200, "");
             }catch (Exception e){
-                map.put(400, e.getMessage());
+                throw new BaseException(INVALID_ARGUMENTS);
             }
         }
         else {
-            map.put(404, "no such background profile img exists");
+            throw new BaseException(NO_BACKGROUND_PROFILE_IMG_EXIST);
         }
-        return map;
     }
 }

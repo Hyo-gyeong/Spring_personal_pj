@@ -37,10 +37,4 @@ public interface ProfileRepo extends JpaRepository<Profile, Long> {
                     "where profile_id = :#{#dto.id}", nativeQuery = true)
     void updateUserProfile(@Param("dto") ProfileDto dto);
 
-//    @Transactional
-//    @Modifying(clearAutomatically = true)
-//    @Query(value = "insert into Profile (profile_id, user_id, name, status_message, create_date_time, update_date_time)\n" +
-//            " values (:profileId, :userId, :name, :message, :now, :now);", nativeQuery = true)
-//    void addProfile(@Param("profileId") long profileId, @Param("userId") long userId, @Param("name") String name,
-//                    @Param("message") String message, @Param("now") LocalDateTime now);
 }

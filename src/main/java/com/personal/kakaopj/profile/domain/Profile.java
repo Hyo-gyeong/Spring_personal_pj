@@ -1,5 +1,7 @@
 package com.personal.kakaopj.profile.domain;
 
+import com.personal.kakaopj.profile.dto.MultiProfileDto;
+import com.personal.kakaopj.profile.dto.ProfileDto;
 import com.personal.kakaopj.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,6 +61,31 @@ public class Profile {
         this.createDateTime = LocalDateTime.now();
         this.updateDateTime = LocalDateTime.now();
     }
+
+    public Profile(){}
+
+    public Profile(User user, MultiProfileDto multiProfileDto){
+        this.user = user;
+        this.name = multiProfileDto.getName();
+        this.statusMessage = multiProfileDto.getStatusMessage();
+        this.isMultiProfile = false;
+        this.profilePlayList = null;
+        this.profileImgList = null;
+        this.createDateTime = LocalDateTime.now();
+        this.updateDateTime = LocalDateTime.now();
+    }
+
+    public Profile(User user, MultiProfileDto multiProfileDto, boolean isMultiProfile){
+        this.user = user;
+        this.name = multiProfileDto.getName();
+        this.statusMessage = multiProfileDto.getStatusMessage();
+        this.isMultiProfile = isMultiProfile;
+        this.profilePlayList = null;
+        this.profileImgList = null;
+        this.createDateTime = LocalDateTime.now();
+        this.updateDateTime = LocalDateTime.now();
+    }
+
     public Profile (User user, String name, String statusMessage, boolean isMultiProfile, ProfilePlayList profilePlayList,
                    List<ProfileImg> profileImgList){
         this.user = user;

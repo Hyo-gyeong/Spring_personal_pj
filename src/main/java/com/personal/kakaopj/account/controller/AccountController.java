@@ -2,6 +2,7 @@ package com.personal.kakaopj.account.controller;
 
 import com.personal.kakaopj.account.dto.UserSignupDto;
 import com.personal.kakaopj.account.service.AccountService;
+import com.personal.kakaopj.basic.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
