@@ -1,4 +1,4 @@
-package com.personal.kakaopj.chatting.domain;
+package com.personal.kakaopj.chat.domain;
 
 import com.personal.kakaopj.personalchat.domain.ChatRoom;
 import com.personal.kakaopj.groupchat.domain.GroupChatRoom;
