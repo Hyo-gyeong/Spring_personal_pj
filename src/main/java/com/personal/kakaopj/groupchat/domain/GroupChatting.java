@@ -1,6 +1,5 @@
 package com.personal.kakaopj.groupchat.domain;
 
-import com.personal.kakaopj.groupchat.domain.GroupChatRoom;
 import com.personal.kakaopj.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,12 +30,12 @@ public class GroupChatting {
     private String groupChatroomName;
 
     @Column(name = "is_alarm_on")
-    private boolean isAlarmOn;
+    private Boolean isAlarmOn;
 
     @Column(name = "is_favorite")
-    private boolean isFavorite;
+    private Boolean isFavorite;
 
     @Column(name = "is_pinned")
-    private boolean isPinned;
+    private Boolean isPinned;
 
 }
