@@ -15,6 +15,7 @@ public enum ErrorCode { // BaseResponseStatus와 같은 역할
     NO_MULTI_PROFILE_EXIST(404, "no multi profile exists", NOT_FOUND),
     NO_BACKGROUND_PROFILE_IMG_EXIST(404, "no background image exists", NOT_FOUND),
     NO_PROFILE_EXIST(404, "no profile exists", NOT_FOUND),
+    NO_GROUP_CHAT_ROOM_EXIST(404, "no group chat room exists", NOT_FOUND),
     TOO_MANY_ARGUMENTS(429, "no more than 4 multi profiles allowed", TOO_MANY_REQUESTS),
     INVALID_ARGUMENTS(400, "invalid arguments" ,BAD_REQUEST),
     SERVER_ERROR(500, "server error", INTERNAL_SERVER_ERROR);
