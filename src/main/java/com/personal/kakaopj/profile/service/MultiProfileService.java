@@ -102,7 +102,7 @@ public class MultiProfileService {
         }
     }
 
-    public ProfileDto createMultiProfile (long userId, MultiProfileDto dto) throws Exception{
+    public ProfileDto createMultiProfile (long userId, MultiProfileDto dto) {
         // 존재하는 사용자인지 확인
         User user = userRepo.findUserById(userId);
         if (user != null) {
