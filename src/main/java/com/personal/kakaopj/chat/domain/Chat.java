@@ -1,5 +1,6 @@
 package com.personal.kakaopj.chat.domain;
 
+import com.personal.kakaopj.chat.dto.ChatDto;
 import com.personal.kakaopj.personalchat.domain.ChatRoom;
 import com.personal.kakaopj.groupchat.domain.GroupChatRoom;
 import lombok.Getter;
@@ -50,5 +51,17 @@ public class Chat {
 
     @Column(name="update_date_time")
     private LocalDateTime updateDateTime;
+
+    public Chat(ChatDto chatDto, GroupChatRoom groupChatRoom, ChatRoom chatRoom){
+        this.groupChatRoom = groupChatRoom;
+        this.chatRoom = chatRoom;
+        this.filePath = chatDto.getFilePath();
+        this.message = chatDto.getMessage();
+        this.isAnnouncement = chatDto.isAnnouncement();
+        this.isBookmark = chatDto.isBookmark();
+        this.howManyRead = chatDto.getHowManyRead();
+        this.createDateTime = LocalDateTime.now();
+        this.updateDateTime = LocalDateTime.now();
+    }
 
 }
