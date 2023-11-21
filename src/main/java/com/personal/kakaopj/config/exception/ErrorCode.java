@@ -11,6 +11,7 @@ public enum ErrorCode { // BaseResponseStatus와 같은 역할
     SUCCESS(200, "successful", OK),
 
     // Request 오류
+    SEND_MESSAGE_ERROR(502, "bad gate way", BAD_GATEWAY),
     No_USER_EXIST(404, "no user exists", NOT_FOUND),
     NO_MULTI_PROFILE_EXIST(404, "no multi profile exists", NOT_FOUND),
     NO_BACKGROUND_PROFILE_IMG_EXIST(404, "no background image exists", NOT_FOUND),
