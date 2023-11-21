@@ -30,14 +30,14 @@ public class MultiProfileController {
 
     // 새로운 멀티 프로필 생성 : 이름, 상태 메시지
     @PostMapping("create")
-    public BaseResponse<ProfileDto> createMultiProfile(@RequestBody MultiProfileDto multiProfileDto) throws Exception {
+    public BaseResponse<ProfileDto> createMultiProfile(@RequestBody MultiProfileDto multiProfileDto) {
         ProfileDto rslt = multiProfileService.createMultiProfile(multiProfileDto.getUserId(), multiProfileDto);
         return BaseResponse.onSuccess(rslt);
     }
 
     // 멀티 프로필 삭제
     @DeleteMapping("delete/{profileId}")
-    public BaseResponse removeMultiProfile(@PathVariable long profileId){
+    public BaseResponse<?> removeMultiProfile(@PathVariable long profileId){
         multiProfileService.removeMultiProfile(profileId);
         return BaseResponse.onSuccess(null);
     }
