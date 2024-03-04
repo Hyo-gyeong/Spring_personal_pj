@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("groupchatting/")
+@RequestMapping("group-chatting/")
 public class GroupChattingController {
 
     @Autowired
@@ -31,6 +32,12 @@ public class GroupChattingController {
     @PostMapping("{groupChattingId}")
     public BaseResponse<GroupChattingDto> getGroupChatting(@PathVariable long groupChattingId){
         GroupChattingDto rslt = groupChattingService.getGroupChatting(groupChattingId);
+        return BaseResponse.onSuccess(rslt);
+    }
+
+    @PostMapping("create")
+    public BaseResponse<GroupChattingDto> createGroupChatting(@RequestBody GroupChattingDto groupChattingDto){
+        GroupChattingDto rslt = groupChattingService.createGroupChatting(groupChattingDto);
         return BaseResponse.onSuccess(rslt);
     }
 

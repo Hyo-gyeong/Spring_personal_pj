@@ -1,5 +1,6 @@
 package com.personal.kakaopj.groupchat.domain;
 
+import com.personal.kakaopj.groupchat.dto.GroupChattingDto;
 import com.personal.kakaopj.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,4 +39,12 @@ public class GroupChatting {
     @Column(name = "is_pinned")
     private Boolean isPinned;
 
+    public GroupChatting(GroupChatRoom groupChatRoom, User user, GroupChattingDto dto){
+        this.groupChatRoom = groupChatRoom;
+        this.user = user;
+        this.groupChatroomName = dto.getGroupChatroomName();
+        this.isAlarmOn = dto.getIsAlarmOn();
+        this.isFavorite = dto.getIsFavorite();
+        this.isPinned = dto.getIsPinned();
+    }
 }

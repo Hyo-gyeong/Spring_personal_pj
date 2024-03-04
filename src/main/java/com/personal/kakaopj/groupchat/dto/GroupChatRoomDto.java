@@ -2,6 +2,7 @@ package com.personal.kakaopj.groupchat.dto;
 
 import com.personal.kakaopj.groupchat.domain.GroupChatRoom;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
